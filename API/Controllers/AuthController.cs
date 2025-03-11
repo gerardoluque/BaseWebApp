@@ -55,12 +55,59 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
             var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, false, false);
 
             if (!result.Succeeded)
             {
                 return Unauthorized();
             }
+
+            if (await _userManager.GetTwoFactorEnabledAsync(user))
+            {
+                return Ok(new { Requires2FA = true });
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("enable-2fa")]
+        public async Task<IActionResult> Enable2FA([FromBody] Enable2FADto enable2FADto)
+        {
+            var user = await _userManager.FindByEmailAsync(enable2FADto.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Authenticator");
+            // Send token to user via email or SMS
+
+            return Ok(new { Token = token });
+        }
+
+        [HttpPost("verify-2fa")]
+        public async Task<IActionResult> Verify2FA([FromBody] Verify2FADto verify2FADto)
+        {
+            var user = await _userManager.FindByEmailAsync(verify2FADto.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.VerifyTwoFactorTokenAsync(user, "Authenticator", verify2FADto.Token);
+
+            if (!result)
+            {
+                return BadRequest("Invalid token");
+            }
+
+            await _userManager.SetTwoFactorEnabledAsync(user, true);
 
             return Ok();
         }

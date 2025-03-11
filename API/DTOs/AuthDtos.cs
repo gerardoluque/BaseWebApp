@@ -42,4 +42,15 @@ namespace API.DTOs
         public string Token { get; set; }
         public string NewPassword { get; set; }
     }
+
+    public class Enable2FADto
+    {
+        public string Email { get; set; }
+    }
+
+    public class Verify2FADto
+    {
+        public string Email { get; set; }
+        public string Token { get; set; }
+    }    
 }

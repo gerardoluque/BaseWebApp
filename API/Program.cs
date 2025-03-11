@@ -23,12 +23,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentityApiEndpoints<Usuario>(opt => 
 {
     opt.User.RequireUniqueEmail = true;
+    opt.SignIn.RequireConfirmedAccount = true;
+    opt.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    opt.SignIn.RequireConfirmedEmail = true;
 })
 .AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<AppDbContext>();
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
-// builder.Services.AddAuthentication();
-// builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors();
 builder.Services.AddMediatR(x => 
