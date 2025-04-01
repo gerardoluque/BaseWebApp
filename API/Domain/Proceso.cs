@@ -13,6 +13,6 @@ namespace API.Domain
         public string Icono { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaUltimaActualizacion { get; set; }      
-        public IEnumerable<Rol> Roles { get; set; }  
+        public ICollection<RolProceso> Roles { get; set; } = [];
     }
 }

@@ -11,5 +11,8 @@ namespace API.Domain
         public required string Descr { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaUltimaActualizacion { get; set; }
+
+        // Relación uno a uno con Usuario
+        public Usuario Usuario { get; set; }
     }
 }
