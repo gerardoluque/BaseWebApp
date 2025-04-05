@@ -5,35 +5,29 @@ using System.Threading.Tasks;
 using API.Domain;
 using MediatR;
 using API.Persistence;
+using API.Application.Core;
 
 namespace API.Application.Grupos.Queries
 {
     public class GetGrupoDetails
     {
-        public class Query : IRequest<Grupo>
+        public class Query : IRequest<Result<Grupo>>
         {
-            public int Id { get; set; }
+            public required int Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Grupo>
+        public class Handler(AppDbContext context) : IRequestHandler<Query, Result<Grupo>>
         {
-            private readonly AppDbContext _context;
-
-            public Handler(AppDbContext context)
+            public async Task<Result<Grupo>> Handle(Query request, CancellationToken cancellationToken)
             {
-                _context = context;
-            }
-
-            public async Task<Grupo> Handle(Query request, CancellationToken cancellationToken)
-            {
-                var grupo = await _context.Grupos.FindAsync(request.Id, cancellationToken);
+                var grupo = await context.Grupos.FindAsync(request.Id, cancellationToken);
 
                 if (grupo == null)
                 {
-                    throw new Exception("No se encontró el grupo");
+                    return Result<Grupo>.Failure("Grupo not found", 404);
                 }
 
-                return grupo;
+                return Result<Grupo>.Success(grupo);
             }
         }
     }

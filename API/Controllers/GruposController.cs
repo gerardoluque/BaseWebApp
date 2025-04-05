@@ -13,16 +13,16 @@ namespace API.Controllers
 {
     public class GruposController() : BaseApiController
     {
-      [HttpGet]
-      public async Task<ActionResult<List<Grupo>>> GetGrupos()
-      {
-          return await Mediator.Send(new GetGrupoList.Query());
-      }
+        [HttpGet]
+        public async Task<ActionResult<List<Grupo>>> GetGrupos()
+        {
+            return await Mediator.Send(new GetGrupoList.Query());
+        }
 
-      [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Grupo>> GetGrupo(int id)
         {
-            return await Mediator.Send(new GetGrupoDetails.Query { Id = id });
+            return HandleResult(await Mediator.Send(new GetGrupoDetails.Query { Id = id }));
         }
     }
 }

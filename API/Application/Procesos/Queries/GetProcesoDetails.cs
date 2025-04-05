@@ -4,35 +4,29 @@ using System.Threading.Tasks;
 using API.Domain;
 using API.Persistence;
 using MediatR;
+using API.Application.Core;
 
 namespace API.Application.Procesos.Queries
 {
     public class GetProcesoDetails
     {
-        public class Query : IRequest<Proceso>
+        public class Query : IRequest<Result<Proceso>>
         {
             public int Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Proceso>
+        public class Handler(AppDbContext context) : IRequestHandler<Query, Result<Proceso>>
         {
-            private readonly AppDbContext _context;
-
-            public Handler(AppDbContext context)
+            public async Task<Result<Proceso>> Handle(Query request, CancellationToken cancellationToken)
             {
-                _context = context;
-            }
-
-            public async Task<Proceso> Handle(Query request, CancellationToken cancellationToken)
-            {
-                var proceso = await _context.Procesos.FindAsync(new object[] { request.Id }, cancellationToken);
+                var proceso = await context.Procesos.FindAsync(new object[] { request.Id }, cancellationToken);
 
                 if (proceso == null)
                 {
-                    throw new Exception("No se encontró el proceso");
+                    return Result<Proceso>.Failure("No se encontró el proceso", 404);
                 }
 
-                return proceso;
+                return Result<Proceso>.Success(proceso);
             }
         }
     }
