@@ -3,19 +3,16 @@ using System;
 using API.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250223235731_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -30,10 +27,17 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("EsActivo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaUltimaActualizacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -50,6 +54,9 @@ namespace API.Migrations
                     b.Property<string>("Descr")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("EsActivo")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("TEXT");
@@ -80,10 +87,17 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("EsActivo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaUltimaActualizacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -129,6 +143,9 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EsActivo")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaCreacion")
@@ -181,6 +198,13 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<short>("TiempoInactividad")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -190,8 +214,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GrupoId")
-                        .IsUnique();
+                    b.HasIndex("GrupoId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -356,8 +379,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Domain.Usuario", b =>
                 {
                     b.HasOne("API.Domain.Grupo", "Grupo")
-                        .WithOne("Usuario")
-                        .HasForeignKey("API.Domain.Usuario", "GrupoId");
+                        .WithMany("Usuarios")
+                        .HasForeignKey("GrupoId");
 
                     b.HasOne("API.Domain.Rol", "Rol")
                         .WithOne("Usuario")
@@ -421,8 +444,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Domain.Grupo", b =>
                 {
-                    b.Navigation("Usuario")
-                        .IsRequired();
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("API.Domain.Proceso", b =>

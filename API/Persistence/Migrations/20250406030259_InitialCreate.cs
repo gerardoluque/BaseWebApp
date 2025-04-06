@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -31,7 +31,9 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
                     Descr = table.Column<string>(type: "TEXT", nullable: false),
+                    EsActivo = table.Column<bool>(type: "INTEGER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FechaUltimaActualizacion = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -49,6 +51,7 @@ namespace API.Migrations
                     Descr = table.Column<string>(type: "TEXT", nullable: false),
                     Tipo = table.Column<string>(type: "TEXT", nullable: false),
                     Icono = table.Column<string>(type: "TEXT", nullable: false),
+                    EsActivo = table.Column<bool>(type: "INTEGER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FechaUltimaActualizacion = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -63,7 +66,9 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
                     Descr = table.Column<string>(type: "TEXT", nullable: false),
+                    EsActivo = table.Column<bool>(type: "INTEGER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FechaUltimaActualizacion = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -101,6 +106,9 @@ namespace API.Migrations
                     Nombre = table.Column<string>(type: "TEXT", nullable: false),
                     PrimerApellido = table.Column<string>(type: "TEXT", nullable: false),
                     SegundoApellido = table.Column<string>(type: "TEXT", nullable: false),
+                    Telefono = table.Column<string>(type: "TEXT", nullable: false),
+                    EsActivo = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TiempoInactividad = table.Column<short>(type: "INTEGER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FechaUltimaActualizacion = table.Column<DateTime>(type: "TEXT", nullable: false),
                     GrupoId = table.Column<int>(type: "INTEGER", nullable: true),
@@ -285,7 +293,8 @@ namespace API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_RolId",
                 table: "AspNetUsers",
-                column: "RolId");
+                column: "RolId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

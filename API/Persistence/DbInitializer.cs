@@ -21,13 +21,15 @@ namespace API.Persistence
             {
                 new Rol
                 {
-                    Descr = "Administrador",
+                    Nombre = "Administrador",
+                    Descr = "Roles para usuarios de tipo Administradores",
                     FechaCreacion = DateTime.Now,
                     FechaUltimaActualizacion = DateTime.Now
                 },
                 new Rol
                 {
-                    Descr = "Usuario",
+                    Nombre = "Usuario",
+                    Descr = "Roles para Usuarios",
                     FechaCreacion = DateTime.Now,
                     FechaUltimaActualizacion = DateTime.Now
                 }
@@ -40,13 +42,15 @@ namespace API.Persistence
             {
                 new Grupo
                 {
-                    Descr = "Administradores",
+                    Nombre = "Administradores",
+                    Descr = "Grupo de Administradores",
                     FechaCreacion = DateTime.Now,
                     FechaUltimaActualizacion = DateTime.Now
                 },
                 new Grupo
                 {
-                    Descr = "Usuarios",
+                    Nombre = "Usuarios",
+                    Descr = "Grupo para Usuarios",
                     FechaCreacion = DateTime.Now,
                     FechaUltimaActualizacion = DateTime.Now
                 }

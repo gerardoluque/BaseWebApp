@@ -10,6 +10,9 @@ namespace API.Domain
         public string PrimerApellido { get; set; }
         public string SegundoApellido { get; set; }
         public string NombreCompleto => $"{Nombre} {PrimerApellido} {SegundoApellido}";
+        public string Telefono { get; set; }
+        public bool EsActivo { get; set; } = true;
+        public short TiempoInactividad { get; set; } = 30; // Tiempo en minutos
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaUltimaActualizacion { get; set; }
 

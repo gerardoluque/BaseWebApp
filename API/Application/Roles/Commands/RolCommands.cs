@@ -14,6 +14,7 @@ namespace API.Application.Roles.Commands
         public class Command : IRequest<Result<int>>
         {
             public string Descr { get; set; }
+            public string Nombre { get; set; }
         }
 
         public class Handler(AppDbContext context) : IRequestHandler<Command, Result<int>>
@@ -22,6 +23,7 @@ namespace API.Application.Roles.Commands
             {
                 var rol = new Rol
                 {
+                    Nombre = request.Nombre,
                     Descr = request.Descr,
                     FechaCreacion = DateTime.UtcNow,
                     FechaUltimaActualizacion = DateTime.UtcNow

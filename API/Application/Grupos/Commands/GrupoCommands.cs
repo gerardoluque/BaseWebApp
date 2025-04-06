@@ -16,6 +16,7 @@ namespace API.Application.Grupos.Commands
         public class Command : IRequest<Result<int>>
         {
             public string Descr { get; set; }
+            public string Nombre { get; set; }
         }
 
         public class Handler(AppDbContext context) : IRequestHandler<Command, Result<int>>
@@ -24,6 +25,7 @@ namespace API.Application.Grupos.Commands
             {
                 var grupo = new Grupo
                 {
+                    Nombre = request.Nombre,
                     Descr = request.Descr,
                     FechaCreacion = DateTime.UtcNow,
                     FechaUltimaActualizacion = DateTime.UtcNow
@@ -83,7 +85,7 @@ namespace API.Application.Grupos.Commands
             public string Descr { get; set; }
         }
 
-        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
+        public class Handler(AppDbContext context) : IRequestHandler<Command, Result<Unit>>
         {
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -94,10 +96,10 @@ namespace API.Application.Grupos.Commands
                     return Result<Unit>.Failure("No se encontró el grupo", 404);
                 }
 
-                mapper.Map(request, grupo); 
+                // mapper.Map(request, grupo); 
 
-                // grupo.Descr = request.Descr;
-                // grupo.FechaUltimaActualizacion = DateTime.UtcNow;
+                grupo.Descr = request.Descr;
+                grupo.FechaUltimaActualizacion = DateTime.UtcNow;
 
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;
 

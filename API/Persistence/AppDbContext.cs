@@ -36,11 +36,11 @@ namespace API.Persistence
                 .WithMany(p => p.Roles)
                 .HasForeignKey(rp => rp.ProcesoId);
 
-            // Configuración de la relación uno a uno entre Usuario y Grupo
+            // Configuración de la relación uno a muchos entre Usuario y Grupo (un grupo tiene muchos usuarios)
             builder.Entity<Usuario>()
                 .HasOne(u => u.Grupo)
-                .WithOne(g => g.Usuario)
-                .HasForeignKey<Usuario>(u => u.GrupoId);
+                .WithMany(g => g.Usuarios)
+                .HasForeignKey(u => u.GrupoId);
 
             // Configuración de la relación uno a uno entre Usuario y Rol
             builder.Entity<Usuario>()
