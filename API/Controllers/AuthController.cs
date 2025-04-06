@@ -52,6 +52,7 @@ namespace API.Controllers
             return ValidationProblem();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -111,7 +112,7 @@ namespace API.Controllers
 
             return Ok();
         }
-
+        
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {

@@ -24,7 +24,7 @@ namespace API.Application.Grupos.Queries
 
                 if (grupo == null)
                 {
-                    return Result<Grupo>.Failure("Grupo not found", 404);
+                    return Result<Grupo>.Failure("Grupo no encontrado", 404);
                 }
 
                 return Result<Grupo>.Success(grupo);

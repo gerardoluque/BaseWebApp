@@ -5,6 +5,11 @@ using API.Domain;
 using API.Application.Grupos.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using API.Application.Grupos.Commands;
+using API.Application.Grupos.Validators;
+using API.Application.Core;
+using API.Middleware;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +28,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentityApiEndpoints<Usuario>(opt => 
 {
     opt.User.RequireUniqueEmail = true;
-    opt.SignIn.RequireConfirmedAccount = true;
+    opt.SignIn.RequireConfirmedAccount = false;
     opt.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-    opt.SignIn.RequireConfirmedEmail = true;
+    opt.SignIn.RequireConfirmedEmail = false;
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>()
@@ -35,10 +40,19 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors();
-builder.Services.AddMediatR(x => 
-    x.RegisterServicesFromAssemblyContaining<GetGrupoList.Handler>());
+
+builder.Services.AddMediatR(x => {
+    x.RegisterServicesFromAssemblyContaining<GetGrupoList.Handler>();
+    x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CreateGrupoValidator>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
     .AllowCredentials()
