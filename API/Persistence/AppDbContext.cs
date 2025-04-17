@@ -45,8 +45,8 @@ namespace API.Persistence
             // Configuración de la relación uno a uno entre Usuario y Rol
             builder.Entity<Usuario>()
                 .HasOne(u => u.Rol)
-                .WithOne(r => r.Usuario)
-                .HasForeignKey<Usuario>(u => u.RolId);
+                .WithMany(r => r.Usuarios)
+                .HasForeignKey(u => u.RolId);
         }
     }
 }

@@ -14,6 +14,6 @@ namespace API.Domain
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaUltimaActualizacion { get; set; }
         public ICollection<RolProceso> Procesos { get; set; } = new List<RolProceso>();
-        public Usuario Usuario { get; set; }
+        public ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
     }
 }

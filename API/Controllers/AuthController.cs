@@ -29,6 +29,7 @@ namespace API.Controllers
                 Nombre = registerDto.Nombre,
                 PrimerApellido = registerDto.PrimerApellido,
                 SegundoApellido = registerDto.SegundoApellido,
+                Telefono = registerDto.Telefono,
                 GrupoId = registerDto.GrupoId,
                 RolId = registerDto.RolId,
                 FechaCreacion = DateTime.UtcNow,

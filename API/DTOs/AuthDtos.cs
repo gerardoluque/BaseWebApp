@@ -14,6 +14,7 @@ namespace API.DTOs
         [Required]
         public string PrimerApellido { get; set; } = "";
         public string SegundoApellido { get; set; } = "";
+        public string Telefono { get; set; } = "";
         public int GrupoId { get; set; }
         public int RolId { get; set; }
     }
