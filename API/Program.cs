@@ -7,15 +7,36 @@ using API.Domain;
 using API.Application.Grupos.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using API.Application.Grupos.Commands;
 using API.Application.Grupos.Validators;
 using API.Application.Core;
 using API.Middleware;
 using FluentValidation;
+using Microsoft.Graph;
+using Azure.Identity; 
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Configura Microsoft Graph
+builder.Services.AddSingleton(provider =>
+{
+    var clientId = builder.Configuration["AzureAd:ClientId"];
+    var tenantId = builder.Configuration["AzureAd:TenantId"];
+    var clientSecret = builder.Configuration["AzureAd:ClientSecret"];
+
+    var options = new TokenCredentialOptions
+    {
+        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud
+    };
+
+    var clientSecretCredential = new ClientSecretCredential(
+        tenantId, clientId, clientSecret, options);
+
+    return new GraphServiceClient(clientSecretCredential);
+});
+
 builder.Services.AddControllers(opt => 
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

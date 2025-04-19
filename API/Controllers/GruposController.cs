@@ -9,40 +9,41 @@ using Microsoft.AspNetCore.Authorization;
 using API.Domain;
 using API.Application.Grupos.Queries;
 using API.Application.Grupos.Commands;
+using Microsoft.Graph.Models;
 
 namespace API.Controllers
 {
     public class GruposController() : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Grupo>>> GetGrupos()
+        public async Task<ActionResult<List<Group>>> GetGrupos()
         {
-            return await Mediator.Send(new GetGrupoList.Query());
+            return await Mediator.Send(new GetGrupoListAzureAD.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Grupo>> GetGrupo(int id)
+        public async Task<ActionResult<Group>> GetGrupo(string id)
         {
-            return HandleResult(await Mediator.Send(new GetGrupoDetails.Query { Id = id }));
+            return HandleResult(await Mediator.Send(new GetGrupoByIdAzureAD.Query { Id = id }));
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateGrupo([FromBody] CreateGrupo.Command command)
+        public async Task<ActionResult<string>> CreateGrupo([FromBody] CreateGrupoAzureAD.Command command)
         {
             return HandleResult(await Mediator.Send(command));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGrupo(int id, [FromBody] UpdateGrupo.Command command)
+        public async Task<IActionResult> UpdateGrupo(string id, [FromBody] UpdateGrupoAzureAD.Command command)
         {
             command.Id = id;
             return HandleResult(await Mediator.Send(command));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGrupo(int id)
+        public async Task<IActionResult> DeleteGrupo(string id)
         {
-            return HandleResult(await Mediator.Send(new DeleteGrupo.Command { Id = id }));
+            return HandleResult(await Mediator.Send(new DeleteGrupoAzureAD.Command { Id = id }));
         }        
     }
 }
